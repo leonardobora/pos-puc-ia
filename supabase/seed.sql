@@ -66,3 +66,71 @@ set
   reference_url = excluded.reference_url,
   notes_pt = excluded.notes_pt,
   notes_en = excluded.notes_en;
+insert into course_modules (id, title_pt, title_en, start_date, end_date, cohort, professor)
+values
+  ('estatistica', 'Estatística', 'Statistics', '2026-05-02', '2026-05-02', 'Inteligência Artificial e Ciência de Dados 2026/1', 'JULIO CESAR NIEVOLA'),
+  ('introducao-python', 'Introdução à Linguagem Python', 'Introduction to Python', '2026-05-02', '2026-05-02', 'Inteligência Artificial e Ciência de Dados 2026/1', 'Vilmar Abreu Junior'),
+  ('analise-preparacao-dados', 'Análise e Preparação de Dados', 'Data Analysis and Preparation', '2026-05-30', '2026-06-13', 'Inteligência Artificial e Ciência de Dados 2026/1', 'Jean Paul Barddal'),
+  ('aprendizagem-maquina', 'Aprendizagem de Máquina', 'Machine Learning', '2026-06-27', '2026-07-11', 'Inteligência Artificial e Ciência de Dados 2026/1', 'Alceu de Souza Britto Junior'),
+  ('projeto-ciencia-dados', 'Projeto em Ciência de Dados', 'Data Science Project', '2026-06-27', '2026-07-11', 'Inteligência Artificial e Ciência de Dados 2026/1', 'Jean Paul Barddal'),
+  ('mineracao-series-temporais', 'Mineração de Séries Temporais', 'Time Series Mining', '2026-08-01', '2026-08-15', 'Inteligência Artificial e Ciência de Dados 2026/1', 'VINICIUS MOURAO ALVES DE SOUZA'),
+  ('big-data-analytics', 'Big Data Analytics', 'Big Data Analytics', '2026-09-12', '2026-09-26', 'Inteligência Artificial e Ciência de Dados 2026/1', 'Eduardo Kugler Viegas'),
+  ('mineracao-processos', 'Mineração de Processos', 'Process Mining', '2026-09-26', '2026-10-10', 'Inteligência Artificial e Ciência de Dados 2026/1', 'Cleiton dos Santos Garcia'),
+  ('deep-learning', 'Deep Learning', 'Deep Learning', '2026-11-21', '2026-12-19', 'Inteligência Artificial e Ciência de Dados 2026/1', 'ANDRE GUSTAVO HOCHULI'),
+  ('visao-computacional-modulo', 'Visão Computacional', 'Computer Vision', '2026-11-21', '2026-12-19', 'Inteligência Artificial e Ciência de Dados 2026/1', 'Rayson Bartoski Laroca dos Santos'),
+  ('agentes-inteligentes-modulo', 'Agentes Inteligentes', 'Intelligent Agents', '2027-02-20', '2027-03-06', 'Inteligência Artificial e Ciência de Dados 2026/1', 'Elisa Terumi Rubel Schneider'),
+  ('llms-modulo', 'Large Language Models', 'Large Language Models', '2027-02-20', '2027-03-06', 'Inteligência Artificial e Ciência de Dados 2026/1', 'Emerson Cabrera Paraiso'),
+  ('mlops-llmops', 'MLOps e LLMOps', 'MLOps and LLMOps', '2027-04-17', '2027-05-15', 'Inteligência Artificial e Ciência de Dados 2026/1', 'Lucca Portes Cavalheiro'),
+  ('sistemas-autonomos', 'Sistemas Autônomos Inteligentes', 'Intelligent Autonomous Systems', '2027-04-17', '2027-05-15', 'Inteligência Artificial e Ciência de Dados 2026/1', 'Marco Antonio Simoes Teixeira'),
+  ('aplicacoes-llms', 'Aplicações de LLMs', 'LLM Applications', '2027-06-19', '2027-07-03', 'Inteligência Artificial e Ciência de Dados 2026/1', 'Professor de Especialização Pucpr, João Pedro Santos Rodrigues'),
+  ('projeto-llms', 'Projeto de LLMs', 'LLM Project', '2027-08-07', '2027-08-07', 'Inteligência Artificial e Ciência de Dados 2026/1', 'Professor de Especialização Pucpr')
+on conflict (id) do update
+set
+  title_pt = excluded.title_pt,
+  title_en = excluded.title_en,
+  start_date = excluded.start_date,
+  end_date = excluded.end_date,
+  cohort = excluded.cohort,
+  professor = excluded.professor;
+
+insert into study_notebooks (id, module_id, status, summary_pt, summary_en, focus_pt, focus_en, updated_at)
+values
+  ('nb-estatistica', 'estatistica', 'planned', 'Módulo de nivelamento para revisar conceitos de probabilidade, distribuição e interpretação de métricas.', 'Leveling module to review probability, distributions, and metric interpretation.', 'Separar fórmulas-chave e montar uma cola visual para consulta rápida.', 'Separate key formulas and build a quick visual reference sheet.', '2026-03-29T18:30:00Z'),
+  ('nb-python', 'introducao-python', 'planned', 'Módulo rápido para alinhar sintaxe, ambiente e fluência básica em Python.', 'Quick module to align syntax, environment, and basic Python fluency.', 'Preparar ambiente local e uma lista de exercícios curtos.', 'Prepare the local environment and a short exercise list.', '2026-03-29T18:35:00Z'),
+  ('nb-dados', 'analise-preparacao-dados', 'active', 'Disciplina central para pipeline analítico, limpeza, exploração e preparação de datasets.', 'Core subject for analytical pipelines, cleaning, exploration, and dataset preparation.', 'Mapear um fluxo padrão com pandas, validação e feature engineering inicial.', 'Map a standard flow with pandas, validation, and initial feature engineering.', '2026-03-29T18:40:00Z'),
+  ('nb-agentes', 'agentes-inteligentes-modulo', 'active', 'Disciplina-chave da pós para arquitetura de agentes, ferramentas, memória e avaliação de fluxos autônomos.', 'Key program subject for agent architecture, tools, memory, and autonomous workflow evaluation.', 'Conectar a disciplina aos repositórios LangChain, AutoGen e OpenAI Agents já curados no app.', 'Connect the subject to the LangChain, AutoGen, and OpenAI Agents repositories already curated in the app.', '2026-03-29T18:45:00Z'),
+  ('nb-llm', 'llms-modulo', 'review', 'Módulo voltado a fundamentos, inferência e estratégias de avaliação de grandes modelos de linguagem.', 'Module focused on LLM foundations, inference, and evaluation strategies.', 'Organizar diferenças entre serving, fine-tuning, alignment e avaliação.', 'Organize differences between serving, fine-tuning, alignment, and evaluation.', '2026-03-29T18:50:00Z'),
+  ('nb-mlops', 'mlops-llmops', 'planned', 'Ponte entre experimentação e operação de modelos, com foco em versionamento, deploy, monitoramento e governança.', 'Bridge between experimentation and model operations, focused on versioning, deployment, monitoring, and governance.', 'Levantar stack mínima com GitHub, Vercel, Supabase e monitoramento de pipelines.', 'Define a minimum stack with GitHub, Vercel, Supabase, and pipeline monitoring.', '2026-03-29T18:55:00Z')
+on conflict (id) do update
+set
+  module_id = excluded.module_id,
+  status = excluded.status,
+  summary_pt = excluded.summary_pt,
+  summary_en = excluded.summary_en,
+  focus_pt = excluded.focus_pt,
+  focus_en = excluded.focus_en,
+  updated_at = excluded.updated_at;
+
+insert into notebook_tasks (id, notebook_id, title_pt, title_en, status)
+values
+  ('task-estatistica-1', 'nb-estatistica', 'Revisar média, mediana, variância e desvio padrão', 'Review mean, median, variance, and standard deviation', 'todo'),
+  ('task-estatistica-2', 'nb-estatistica', 'Criar um resumo com exemplos em Python', 'Create a summary with Python examples', 'todo'),
+  ('task-python-1', 'nb-python', 'Validar ambiente com Python, pip e Jupyter', 'Validate environment with Python, pip, and Jupyter', 'in-progress'),
+  ('task-python-2', 'nb-python', 'Montar cheatsheet de listas, dicionários e funções', 'Build a cheatsheet for lists, dictionaries, and functions', 'todo'),
+  ('task-dados-1', 'nb-dados', 'Criar template de notebook para EDA', 'Create a notebook template for EDA', 'done'),
+  ('task-dados-2', 'nb-dados', 'Listar técnicas de imputação e normalização', 'List imputation and normalization techniques', 'in-progress'),
+  ('task-dados-3', 'nb-dados', 'Separar dataset público para prática', 'Select a public dataset for practice', 'todo'),
+  ('task-agentes-1', 'nb-agentes', 'Definir glossário de agentes, ferramentas e memória', 'Define a glossary for agents, tools, and memory', 'done'),
+  ('task-agentes-2', 'nb-agentes', 'Esboçar mini projeto com agente executor e avaliador', 'Outline a mini project with an executor and evaluator agent', 'in-progress'),
+  ('task-agentes-3', 'nb-agentes', 'Registrar comparativo entre frameworks', 'Record a comparison between frameworks', 'todo'),
+  ('task-llm-1', 'nb-llm', 'Revisar conceitos de tokens, contexto e attention', 'Review tokens, context, and attention concepts', 'done'),
+  ('task-llm-2', 'nb-llm', 'Consolidar mapa mental de serving com vLLM e llama.cpp', 'Consolidate a serving mind map with vLLM and llama.cpp', 'done'),
+  ('task-llm-3', 'nb-llm', 'Preparar roteiro de revisão para avaliação final', 'Prepare a review script for final assessment', 'in-progress'),
+  ('task-mlops-1', 'nb-mlops', 'Mapear ciclo de vida de modelos usado no curso', 'Map the model lifecycle used in the course', 'todo'),
+  ('task-mlops-2', 'nb-mlops', 'Definir critérios de observabilidade para aplicações com LLM', 'Define observability criteria for LLM applications', 'todo')
+on conflict (id) do update
+set
+  notebook_id = excluded.notebook_id,
+  title_pt = excluded.title_pt,
+  title_en = excluded.title_en,
+  status = excluded.status;

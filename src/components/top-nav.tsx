@@ -11,6 +11,7 @@ export function TopNav() {
   const links = [
     { href: "/", label: t(locale, "navHome") },
     { href: "/subjects", label: t(locale, "navSubjects") },
+    { href: "/schedule", label: t(locale, "navSchedule") },
     { href: "/updates", label: t(locale, "navUpdates") },
     { href: "/progress", label: t(locale, "navProgress") },
   ];
