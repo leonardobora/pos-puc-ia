@@ -58,6 +58,10 @@ export interface CourseModule {
   endDate: string;
   cohort: string;
   professor: string;
+  credits: number;
+  classHours: number;
+  clockHours: number;
+  status: "a-cursar" | "concluido";
 }
 
 export interface NotebookTask {

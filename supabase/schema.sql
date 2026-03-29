@@ -62,8 +62,21 @@ create table if not exists course_modules (
   end_date date not null,
   cohort text not null,
   professor text not null,
+  credits int not null default 0,
+  class_hours int not null default 0,
+  clock_hours int not null default 0,
+  status text not null default 'a-cursar' check (status in ('a-cursar', 'concluido')),
   created_at timestamptz not null default now()
 );
+
+alter table course_modules
+  add column if not exists credits int not null default 0;
+alter table course_modules
+  add column if not exists class_hours int not null default 0;
+alter table course_modules
+  add column if not exists clock_hours int not null default 0;
+alter table course_modules
+  add column if not exists status text not null default 'a-cursar';
 
 create table if not exists study_notebooks (
   id text primary key,

@@ -70,6 +70,10 @@ interface CourseModuleRow {
   end_date: string;
   cohort: string;
   professor: string;
+  credits: number;
+  class_hours: number;
+  clock_hours: number;
+  status: "a-cursar" | "concluido";
 }
 
 interface NotebookTaskRow {
@@ -224,7 +228,9 @@ export async function getCourseModules(): Promise<CourseModule[]> {
 
   const { data, error } = await supabase
     .from("course_modules")
-    .select("id,title_pt,title_en,start_date,end_date,cohort,professor")
+    .select(
+      "id,title_pt,title_en,start_date,end_date,cohort,professor,credits,class_hours,clock_hours,status",
+    )
     .order("start_date", { ascending: true });
 
   if (error || !data) {
@@ -239,6 +245,10 @@ export async function getCourseModules(): Promise<CourseModule[]> {
     endDate: item.end_date,
     cohort: item.cohort,
     professor: item.professor,
+    credits: item.credits ?? 0,
+    classHours: item.class_hours ?? 0,
+    clockHours: item.clock_hours ?? 0,
+    status: item.status ?? "a-cursar",
   }));
 }
 

@@ -135,9 +135,9 @@ export default function SchedulePage() {
                     </p>
                   </div>
                   <span className="rounded-full border border-amber-300/30 px-3 py-1 text-xs uppercase tracking-[0.14em] text-amber-200">
-                    {toDate(courseModule.endDate) >= now
-                      ? t(locale, "scheduleStatusUpcoming")
-                      : t(locale, "scheduleStatusDone")}
+                    {courseModule.status === "concluido"
+                      ? t(locale, "scheduleStatusDone")
+                      : t(locale, "scheduleStatusUpcoming")}
                   </span>
                 </div>
 
@@ -151,6 +151,18 @@ export default function SchedulePage() {
                     <dd>
                       {dateFormatter.format(toDate(courseModule.startDate))} - {dateFormatter.format(toDate(courseModule.endDate))}
                     </dd>
+                  </div>
+                  <div>
+                    <dt className="text-slate-400">{t(locale, "scheduleCredits")}</dt>
+                    <dd>{courseModule.credits}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-slate-400">{t(locale, "scheduleClassHours")}</dt>
+                    <dd>{courseModule.classHours}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-slate-400">{t(locale, "scheduleClockHours")}</dt>
+                    <dd>{courseModule.clockHours}</dd>
                   </div>
                 </dl>
               </article>

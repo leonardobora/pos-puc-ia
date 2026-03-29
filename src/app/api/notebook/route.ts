@@ -5,11 +5,16 @@ import {
   updateStudyNotebook,
 } from "@/lib/data-store";
 import { NotebookStatus, NotebookTaskStatus } from "@/lib/types";
+import { isAuthenticatedRequest } from "@/lib/auth";
 
 const NOTEBOOK_STATUSES: NotebookStatus[] = ["planned", "active", "review", "done"];
 const TASK_STATUSES: NotebookTaskStatus[] = ["todo", "in-progress", "done"];
 
 function isWriteAuthorized(request: Request) {
+  if (isAuthenticatedRequest(request)) {
+    return true;
+  }
+
   const expectedSecret = process.env.NOTEBOOK_ADMIN_SECRET ?? process.env.CRON_SECRET;
   if (!expectedSecret) {
     return false;

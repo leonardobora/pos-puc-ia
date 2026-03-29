@@ -13,6 +13,7 @@
 5. Interface consulta /api/schedule e /api/notebook para calendario e caderno de estudos.
 6. Escrita de caderno usa /api/notebook (POST/PATCH) com segredo em cabecalho x-admin-secret.
 7. Operacoes de escrita no Supabase exigem SUPABASE_SERVICE_ROLE_KEY no servidor.
+8. Login pessoal usa /api/auth/login, /api/auth/logout e /api/auth/session com cookie httpOnly assinado.
 
 ## Decisoes de MVP
 - Idioma padrao: PT-BR com alternancia para EN.
@@ -28,3 +29,4 @@
 ## Banco de dados
 - Tabelas de apoio academico: course_modules, study_notebooks, notebook_tasks.
 - Indices de performance em FKs: repositories.subject_id, study_notebooks.module_id, notebook_tasks.notebook_id.
+- course_modules inclui metadados de disciplina: credits, class_hours, clock_hours e status.

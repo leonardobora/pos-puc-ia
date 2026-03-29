@@ -28,9 +28,12 @@ Hub academico bilingue para acompanhar estudos da pos em IA e Ciencia de Dados, 
 
 - Home com resumo estrategico e timeline academica.
 - Catalogo de disciplinas e repositorios curados.
+- Curadoria baseada em awesome-repositories para IA e Ciencia de Dados.
 - Feed de atualizacoes de repositorios.
 - Calendario consolidado da turma.
 - Caderno por modulo com checklist de tarefas.
+- Login pessoal (admin/admin por padrao, configuravel por ambiente).
+- Pagina de contato e links relevantes no header/footer.
 - API interna para subjects, updates, progress, schedule e notebook.
 - UI bilingue PT-BR e EN.
 
@@ -44,7 +47,12 @@ src/
     updates/page.tsx
     schedule/page.tsx
     progress/page.tsx
+    contact/page.tsx
+    login/page.tsx
     api/
+      auth/login/route.ts
+      auth/logout/route.ts
+      auth/session/route.ts
       subjects/route.ts
       updates/route.ts
       progress/route.ts
@@ -55,9 +63,12 @@ src/
     hero.tsx
     language-switcher.tsx
     locale-provider.tsx
+    site-footer.tsx
     top-nav.tsx
   lib/
     i18n.ts
+    auth.ts
+    profile.ts
     types.ts
     data-store.ts
     supabase-admin.ts
@@ -90,6 +101,8 @@ cp .env.example .env.local
 - `SUPABASE_ANON_KEY` (leitura)
 - `SUPABASE_SERVICE_ROLE_KEY` (escrita server-side)
 - `NOTEBOOK_ADMIN_SECRET` (protecao de POST/PATCH em `/api/notebook`)
+- `ADMIN_USERNAME` e `ADMIN_PASSWORD` (login pessoal)
+- `AUTH_SESSION_SECRET` (assinatura da sessao)
 
 4. Rode o app.
 
@@ -104,6 +117,7 @@ npm run dev
 - Nunca commitar segredos no repositório.
 - `SUPABASE_SERVICE_ROLE_KEY` deve existir apenas no servidor/ambiente privado.
 - Operacoes de escrita no caderno usam `x-admin-secret` no backend.
+- Operacoes de escrita no caderno aceitam sessao autenticada de login pessoal.
 - Sem `SUPABASE_SERVICE_ROLE_KEY`, a aplicacao continua em modo leitura remota/fallback.
 
 ## Fluxo de uso recomendado
@@ -121,6 +135,8 @@ npm run dev
 - [x] Calendario da pos integrado.
 - [x] Caderno com edicao de status/resumo/foco.
 - [x] Atualizacao de status de tarefas pela interface.
+- [x] Login pessoal para edicao privada do caderno.
+- [x] Pagina de contato e links de perfil no layout.
 - [ ] Criacao de novas tarefas no caderno via UI.
 - [ ] Edicao de titulo das tarefas via UI.
 - [ ] Melhor feedback de erro/sucesso por acao.

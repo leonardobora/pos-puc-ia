@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useLocale } from "@/components/locale-provider";
 import { t } from "@/lib/i18n";
 import {
@@ -33,7 +34,7 @@ export default function ProgressPage() {
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [modules, setModules] = useState<CourseModule[]>([]);
   const [notebooks, setNotebooks] = useState<StudyNotebook[]>([]);
-  const [adminSecret, setAdminSecret] = useState("");
+  const [canEdit, setCanEdit] = useState(false);
   const [editingNotebookId, setEditingNotebookId] = useState<string | null>(null);
   const [drafts, setDrafts] = useState<Record<string, NotebookDraft>>({});
   const [saveState, setSaveState] = useState<Record<string, string>>({});
@@ -56,6 +57,11 @@ export default function ProgressPage() {
   }
 
   useEffect(() => {
+    fetch("/api/auth/session")
+      .then((res) => res.json())
+      .then((payload) => setCanEdit(Boolean(payload.authenticated)))
+      .catch(() => setCanEdit(false));
+
     loadAll().catch(() => {
       setMilestones([]);
       setModules([]);
@@ -187,7 +193,6 @@ export default function ProgressPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-admin-secret": adminSecret,
         },
         body: JSON.stringify(draft),
       });
@@ -224,7 +229,6 @@ export default function ProgressPage() {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          "x-admin-secret": adminSecret,
         },
         body: JSON.stringify({ taskId, status }),
       });
@@ -255,19 +259,14 @@ export default function ProgressPage() {
         <h1 className="font-serif text-3xl text-amber-300">{t(locale, "progressTitle")}</h1>
         <p className="mt-3 max-w-3xl text-slate-300">{t(locale, "progressIntro")}</p>
 
-        <div className="mt-6 rounded-2xl border border-slate-700 bg-slate-950/70 p-5">
-          <label className="block text-xs uppercase tracking-[0.14em] text-slate-400">
-            {t(locale, "notebookAdminSecretLabel")}
-          </label>
-          <input
-            className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-slate-100 outline-none focus:border-amber-300"
-            type="password"
-            value={adminSecret}
-            placeholder={t(locale, "notebookAdminSecretPlaceholder")}
-            onChange={(event) => setAdminSecret(event.target.value)}
-          />
-          <p className="mt-2 text-xs text-slate-400">{t(locale, "notebookAdminSecretHint")}</p>
-        </div>
+        {!canEdit && (
+          <div className="mt-6 rounded-2xl border border-amber-300/30 bg-amber-300/10 p-5 text-sm text-amber-100">
+            <p>{t(locale, "progressLoginRequired")}</p>
+            <Link className="mt-2 inline-block font-semibold hover:underline" href="/login">
+              {t(locale, "navLogin")}
+            </Link>
+          </div>
+        )}
 
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
           <article className="rounded-2xl border border-slate-700 bg-slate-950/80 p-5">
@@ -317,13 +316,15 @@ export default function ProgressPage() {
                   <span className="rounded-full border border-slate-700 px-3 py-1 text-xs uppercase tracking-[0.13em] text-slate-300">
                     {tasks.length > 0 ? `${doneCount}/${tasks.length}` : "0/0"}
                   </span>
-                  <button
-                    className="rounded-full border border-amber-300/40 px-3 py-1 text-xs uppercase tracking-[0.13em] text-amber-200 hover:border-amber-300"
-                    type="button"
-                    onClick={() => openEditor(courseModule.id, notebook)}
-                  >
-                    {notebook ? t(locale, "notebookEdit") : t(locale, "notebookStart")}
-                  </button>
+                  {canEdit && (
+                    <button
+                      className="rounded-full border border-amber-300/40 px-3 py-1 text-xs uppercase tracking-[0.13em] text-amber-200 hover:border-amber-300"
+                      type="button"
+                      onClick={() => openEditor(courseModule.id, notebook)}
+                    >
+                      {notebook ? t(locale, "notebookEdit") : t(locale, "notebookStart")}
+                    </button>
+                  )}
                 </div>
               </div>
 
@@ -456,19 +457,25 @@ export default function ProgressPage() {
                                 {locale === "pt-BR" ? task.titlePt : task.titleEn}
                               </p>
                               <div className="flex items-center gap-2">
-                                <select
-                                  className="rounded-lg border border-slate-600 bg-slate-900 px-2 py-1 text-xs text-slate-100"
-                                  value={task.status}
-                                  onChange={(event) =>
-                                    updateTask(task.id, event.target.value as NotebookTaskStatus)
-                                  }
-                                >
-                                  {TASK_STATUS_ORDER.map((status) => (
-                                    <option key={status} value={status}>
-                                      {statusLabel[status]}
-                                    </option>
-                                  ))}
-                                </select>
+                                {canEdit ? (
+                                  <select
+                                    className="rounded-lg border border-slate-600 bg-slate-900 px-2 py-1 text-xs text-slate-100"
+                                    value={task.status}
+                                    onChange={(event) =>
+                                      updateTask(task.id, event.target.value as NotebookTaskStatus)
+                                    }
+                                  >
+                                    {TASK_STATUS_ORDER.map((status) => (
+                                      <option key={status} value={status}>
+                                        {statusLabel[status]}
+                                      </option>
+                                    ))}
+                                  </select>
+                                ) : (
+                                  <span className="text-[11px] uppercase tracking-[0.13em] text-slate-400">
+                                    {statusLabel[task.status]}
+                                  </span>
+                                )}
                                 {taskSavingId === task.id && (
                                   <span className="text-[11px] uppercase tracking-[0.13em] text-slate-400">
                                     {t(locale, "notebookSaving")}

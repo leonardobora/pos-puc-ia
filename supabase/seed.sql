@@ -134,3 +134,124 @@ set
   title_pt = excluded.title_pt,
   title_en = excluded.title_en,
   status = excluded.status;
+
+insert into subjects (id, name_pt, name_en, summary_pt, summary_en)
+values
+  ('etica-em-ia', 'Ética em IA', 'AI Ethics', 'Princípios de justiça, transparência, privacidade e governança para sistemas de IA aplicados.', 'Principles of fairness, transparency, privacy, and governance for applied AI systems.'),
+  ('awesome-ia-dados', 'Curadoria Awesome IA e Dados', 'Awesome AI and Data Curation', 'Seleção de awesome-repositories para acelerar descoberta de ferramentas e trilhas de estudo práticas.', 'Selection of awesome repositories to accelerate discovery of practical tools and study tracks.')
+on conflict (id) do update
+set
+  name_pt = excluded.name_pt,
+  name_en = excluded.name_en,
+  summary_pt = excluded.summary_pt,
+  summary_en = excluded.summary_en;
+
+insert into repositories (id, subject_id, full_name, url, language, stars, last_activity, level, tags, why_pt, why_en)
+values
+  ('awesome-ai-guidelines', 'etica-em-ia', 'EthicalML/awesome-production-machine-learning', 'https://github.com/EthicalML/awesome-production-machine-learning', 'Markdown', 7000, '2026-03-22', 'foundation', '{ethics,mlops,governance}', 'Curadoria prática para produção responsável com risco, monitoramento e governança.', 'Practical curation for responsible production with risk, monitoring, and governance.'),
+  ('fairlearn', 'etica-em-ia', 'fairlearn/fairlearn', 'https://github.com/fairlearn/fairlearn', 'Python', 3000, '2026-03-20', 'intermediate', '{fairness,ethics}', 'Biblioteca para avaliação e mitigação de vieses em modelos supervisionados.', 'Library to evaluate and mitigate bias in supervised models.'),
+  ('aif360', 'etica-em-ia', 'Trusted-AI/AIF360', 'https://github.com/Trusted-AI/AIF360', 'Python', 5200, '2026-03-18', 'advanced', '{fairness,bias}', 'Conjunto robusto de métricas e algoritmos de fairness para pesquisa aplicada.', 'Robust set of fairness metrics and algorithms for applied research.'),
+  ('awesome-ml', 'awesome-ia-dados', 'josephmisiti/awesome-machine-learning', 'https://github.com/josephmisiti/awesome-machine-learning', 'Markdown', 68000, '2026-03-26', 'foundation', '{awesome,machine-learning}', 'Índice clássico para navegar ecossistema de ML por linguagem e tarefa.', 'Classic index to navigate the ML ecosystem by language and task.'),
+  ('awesome-datascience', 'awesome-ia-dados', 'academic/awesome-datascience', 'https://github.com/academic/awesome-datascience', 'Markdown', 28000, '2026-03-24', 'foundation', '{awesome,data-science}', 'Mapa de ferramentas e recursos para ciência de dados do zero ao avançado.', 'Map of tools and resources for data science from zero to advanced.'),
+  ('awesome-llmops', 'awesome-ia-dados', 'tensorchord/Awesome-LLMOps', 'https://github.com/tensorchord/Awesome-LLMOps', 'Markdown', 9000, '2026-03-23', 'intermediate', '{awesome,llmops}', 'Visão rápida de arquitetura, ferramentas e práticas de LLMOps.', 'Quick view of LLMOps architecture, tools, and practices.'),
+  ('awesome-mlops', 'awesome-ia-dados', 'visenger/awesome-mlops', 'https://github.com/visenger/awesome-mlops', 'Markdown', 16000, '2026-03-21', 'intermediate', '{awesome,mlops}', 'Curadoria enxuta para stack de produção, observabilidade e ciclo de vida de modelos.', 'Lean curation for production stack, observability, and model lifecycle.')
+on conflict (id) do update
+set
+  subject_id = excluded.subject_id,
+  full_name = excluded.full_name,
+  url = excluded.url,
+  language = excluded.language,
+  stars = excluded.stars,
+  last_activity = excluded.last_activity,
+  level = excluded.level,
+  tags = excluded.tags,
+  why_pt = excluded.why_pt,
+  why_en = excluded.why_en;
+
+insert into repo_updates (id, repo_full_name, repo_url, updated_at, summary_pt, summary_en)
+values
+  ('up-4', 'josephmisiti/awesome-machine-learning', 'https://github.com/josephmisiti/awesome-machine-learning', '2026-03-28T16:11:00Z', 'Novas referências para NLP aplicado e pipelines de produção.', 'New references for applied NLP and production pipelines.'),
+  ('up-5', 'academic/awesome-datascience', 'https://github.com/academic/awesome-datascience', '2026-03-28T12:20:00Z', 'Curadoria ampliada em analytics, visualização e ferramentas de dados.', 'Expanded curation in analytics, visualization, and data tools.'),
+  ('up-6', 'tensorchord/Awesome-LLMOps', 'https://github.com/tensorchord/Awesome-LLMOps', '2026-03-27T19:05:00Z', 'Atualização de stack para observabilidade e avaliação contínua de LLMs.', 'Stack update for observability and continuous LLM evaluation.')
+on conflict (id) do update
+set
+  repo_full_name = excluded.repo_full_name,
+  repo_url = excluded.repo_url,
+  updated_at = excluded.updated_at,
+  summary_pt = excluded.summary_pt,
+  summary_en = excluded.summary_en;
+
+insert into course_modules (id, title_pt, title_en, start_date, end_date, cohort, professor, credits, class_hours, clock_hours, status)
+values
+  ('etica', 'Ética', 'Ethics', '2027-01-16', '2027-01-30', 'Inteligência Artificial e Ciência de Dados 2026/1', 'Professor de Especialização Pucpr', 24, 24, 24, 'a-cursar')
+on conflict (id) do update
+set
+  title_pt = excluded.title_pt,
+  title_en = excluded.title_en,
+  start_date = excluded.start_date,
+  end_date = excluded.end_date,
+  cohort = excluded.cohort,
+  professor = excluded.professor,
+  credits = excluded.credits,
+  class_hours = excluded.class_hours,
+  clock_hours = excluded.clock_hours,
+  status = excluded.status;
+
+update course_modules
+set
+  credits = case
+    when id in ('estatistica', 'introducao-python', 'projeto-llms', 'projeto-ciencia-dados') then 12
+    else 24
+  end,
+  class_hours = case
+    when id in ('estatistica', 'introducao-python', 'projeto-llms', 'projeto-ciencia-dados') then 12
+    else 24
+  end,
+  clock_hours = case
+    when id in ('estatistica', 'introducao-python', 'projeto-llms', 'projeto-ciencia-dados') then 12
+    else 24
+  end,
+  status = coalesce(status, 'a-cursar')
+where id in (
+  'agentes-inteligentes-modulo',
+  'analise-preparacao-dados',
+  'aplicacoes-llms',
+  'aprendizagem-maquina',
+  'big-data-analytics',
+  'deep-learning',
+  'estatistica',
+  'etica',
+  'introducao-python',
+  'llms-modulo',
+  'mineracao-processos',
+  'mineracao-series-temporais',
+  'mlops-llmops',
+  'projeto-llms',
+  'projeto-ciencia-dados',
+  'sistemas-autonomos',
+  'visao-computacional-modulo'
+);
+
+insert into study_notebooks (id, module_id, status, summary_pt, summary_en, focus_pt, focus_en, updated_at)
+values
+  ('nb-etica', 'etica', 'planned', 'Módulo para consolidar princípios de uso responsável de IA em produtos e processos.', 'Module to consolidate responsible AI principles in products and processes.', 'Definir checklist mínimo de ética, privacidade e transparência para os projetos da pós.', 'Define a minimum ethics, privacy, and transparency checklist for postgrad projects.', '2026-03-29T19:10:00Z')
+on conflict (id) do update
+set
+  module_id = excluded.module_id,
+  status = excluded.status,
+  summary_pt = excluded.summary_pt,
+  summary_en = excluded.summary_en,
+  focus_pt = excluded.focus_pt,
+  focus_en = excluded.focus_en,
+  updated_at = excluded.updated_at;
+
+insert into notebook_tasks (id, notebook_id, title_pt, title_en, status)
+values
+  ('task-etica-1', 'nb-etica', 'Mapear riscos éticos por tipo de projeto', 'Map ethical risks by project type', 'todo'),
+  ('task-etica-2', 'nb-etica', 'Definir critérios de explicabilidade mínima', 'Define minimum explainability criteria', 'todo')
+on conflict (id) do update
+set
+  notebook_id = excluded.notebook_id,
+  title_pt = excluded.title_pt,
+  title_en = excluded.title_en,
+  status = excluded.status;
